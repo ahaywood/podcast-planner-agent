@@ -1,31 +1,25 @@
 import { Constants } from "@/lib/constants";
-import { generateText, tool } from "ai";
+import { generateObject } from "ai";
 import z from "zod";
+import { systemPrompt } from "../systemPrompt";
 
-export const outline = tool({
-  name: "generate-outline",
-  description: `This tool generates a podcast outline based on the provided
-    topic. Use this tool when the user asks for an outline or is trying to plan
-    the content of the episode.`,
-  inputSchema: z.object({
-    topic: z.string().describe("The topic of the episode"),
-  }),
-  outputSchema: z.object({
-    outline: z
-      .array(
-        z.object({
-          section: z.string().describe("The title of the section"),
-          notes: z
-            .array(z.string())
-            .describe("The notes, topics, or questions for each section"),
-        })
-      )
-      .describe("The outline of the episode"),
-  }),
-  execute: async ({ topic }) => {
-    const { text } = await generateText({
-      model: Constants.OPENAI_MODEL,
-      prompt: `Topic: ${topic}
+export const outlineObject = async (topic: string) => {
+  const { object } = await generateObject({
+    model: Constants.OPENAI_MODEL,
+    system: systemPrompt,
+    schema: z.object({
+      outline: z
+        .array(
+          z.object({
+            section: z.string().describe("The title of the section"),
+            notes: z
+              .array(z.string())
+              .describe("The notes, topics, or questions for each section"),
+          })
+        )
+        .describe("The outline of the episode"),
+    }),
+    prompt: `Topic: ${topic}
 
           You are a podcast outline planner. Create a clear,
           production-ready segment outline tailored to the episode type. Be specific,
@@ -36,7 +30,7 @@ export const outline = tool({
               - Return 6–12 segments that reasonably fit within durationMinutes.
               - Include an Intro and an Outro/CTA segment in all cases.
               - Host: prioritize a logical flow (setup → deep dive → takeaways → CTA).
-              - Guest: add a short Guest Bio/Context segment near the start and at least one Guided Conversation segment. Use the guest’s last name in segment titles where natural. The guided conversation should be a list of questions.
+              - Guest: add a short Guest Bio/Context segment near the start and at least one Guided Conversation segment. Use the guest's last name in segment titles where natural. The guided conversation should be a list of questions.
               - Panel: include Lightning Takes, Main Debate, and Counterpoints segments. The guided conversation should be a list of questions.
               - Do not provide estimated start times.
               - Keep section titles short and skimmable; notes should give 1–2 sentences of guidance (no scripts, no URLs).
@@ -49,11 +43,7 @@ export const outline = tool({
                 - Content aligns with topics, audience, goal, and tone.
                 - Guest/Panel specifics included when applicable.
               `,
-    });
+  });
 
-    console.log("🎯 generate-outline tool");
-    const result = JSON.parse(text);
-
-    return result;
-  },
-});
+  return object;
+};
