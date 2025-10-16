@@ -1,25 +1,34 @@
-import { titlesObject } from "./objects/titles";
-import { outlineObject } from "./objects/outline";
-import { socialMediaObject } from "./objects/socialMedia";
+import { Experimental_Agent as Agent, stepCountIs } from "ai";
+import { assetGenerator } from "./tools/assetGenerator";
+import { Constants } from "@/lib/constants";
+import { outline } from "./tools/outline";
+import { socialMedia } from "./tools/socialMedia";
+import { titles } from "./tools/titles";
 
 // Set the maximum duration for this function
 export const maxDuration = 60; // 60 seconds
 
 export async function POST(request: Request) {
-  const { topic }: { topic?: string } = await request.json();
+  const { prompt }: { prompt?: string } = await request.json();
 
-  if (!topic) {
-    return new Response("Topic is required", { status: 400 });
+  if (!prompt) {
+    return Response.json({ error: "Prompt is required" }, { status: 400 });
   }
 
-  // Generate content in parallel
-  const [titleContent, outlineContent, socialMediaContent] = await Promise.all([
-    titlesObject(topic),
-    outlineObject(topic),
-    socialMediaObject(topic),
-  ]);
+  const assetGeneratorAgent = new Agent({
+    model: Constants.OPENAI_MODEL,
+    tools: {
+      assetGenerator,
+      outline,
+      socialMedia,
+      titles,
+    },
+    stopWhen: stepCountIs(1),
+  });
 
-  const content = [titleContent, outlineContent, socialMediaContent];
+  const result = await assetGeneratorAgent.generate({ prompt });
 
-  return Response.json({ content });
+  console.log({ result });
+
+  return Response.json(result);
 }
