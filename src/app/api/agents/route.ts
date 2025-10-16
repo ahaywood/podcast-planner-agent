@@ -28,7 +28,5 @@ export async function POST(request: Request) {
 
   const result = await assetGeneratorAgent.generate({ prompt });
 
-  console.log({ result });
-
   return Response.json(result);
 }
