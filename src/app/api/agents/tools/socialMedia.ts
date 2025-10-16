@@ -6,7 +6,7 @@ export const socialMedia = tool({
   name: "generate-social-media",
   description: `This tool generates social media posts for a podcast episode
     based on the provided topic. Use this tool when the user asks for social
-    media posts or asks about promoting the episode.`,
+    media posts or asks about promoting the episode. Returns strict JSON, no extra text.`,
   inputSchema: z.object({
     topic: z.string().describe("The topic of the episode"),
   }),

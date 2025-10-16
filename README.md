@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Podcast Planner
+
+An AI-powered podcast planning application built with Next.js that helps web developers create comprehensive podcast content including outlines, titles, and social media posts.
+
+## Features
+
+- **AI-Powered Content Generation**: Uses OpenAI's GPT-4o-mini to generate podcast content
+- **Podcast Outlines**: Creates structured episode outlines with 6-12 segments including intro, main content, and outro
+- **Title Generation**: Generates 5-8 distinct, SEO-friendly episode titles (≤70 characters)
+- **Social Media Posts**: Creates promotional content for Twitter/X and LinkedIn
+- **Web Developer Focus**: Specifically designed for React and JavaScript developers
+- **Structured Content**: Supports different podcast formats (host, guest, panel discussions)
+
+## Tech Stack
+
+- **Framework**: Next.js 15.5.5 with App Router
+- **AI Integration**: Vercel AI SDK with OpenAI
+- **Validation**: Zod for schema validation
+- **Runtime**: React 19
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+
+- OpenAI API key
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd podcast-planner
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+# Create .env.local file
+AI_GATEWAY_API_KEY=your_openai_api_key_here
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## API Endpoints
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### `/api/agents`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Main AI agent endpoint that provides tools for:
+- `generate-outline`: Creates podcast episode outlines
+- `generate-titles`: Generates episode title options
+- `generate-social-media`: Creates promotional social media posts
+- `generate-assets`: Generates all content types in parallel
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/
+│   ├── api/agents/          # AI agent API routes
+│   │   ├── functions/       # Core AI generation functions
+│   │   ├── tools/          # Tool definitions for AI agent
+│   │   └── route.ts        # Main API endpoint
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx           # Home page
+└── lib/
+    └── constants.ts       # App constants
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Usage
+
+The application provides AI-powered tools to help podcast creators:
+
+1. **Generate Episode Outlines**: Create structured content plans with segments, notes, and talking points
+2. **Create Episode Titles**: Generate multiple title options optimized for SEO and engagement
+3. **Plan Social Media**: Create promotional posts for Twitter/X and LinkedIn
+4. **Batch Content Generation**: Generate all assets simultaneously for efficiency
+
+## Development
+
+### Scripts
+
+- `npm run dev` - Start development server with Turbopack
+- `npm run build` - Build for production with Turbopack
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Key Dependencies
+
+- `ai` - Vercel AI SDK for LLM integration
+- `zod` - Schema validation
+- `next` - React framework
+- `tailwindcss` - CSS framework
+
+## Deployment
+
+Deploy easily on Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/podcast-planner)
+
+## License
+
+Private project - All rights reserved.

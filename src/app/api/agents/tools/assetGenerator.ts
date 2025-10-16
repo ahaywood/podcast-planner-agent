@@ -9,7 +9,7 @@ export const assetGenerator = tool({
   name: "generate-assets",
   description: `This tool generates assets for a podcast episode based on the provided
     topic. Use this tool when the user asks for assets or is trying to plan
-    the content of the episode.`,
+    the content of the episode. Returns strict JSON, no extra text.`,
   inputSchema: z.object({
     topic: z.string().describe("The topic of the episode"),
   }),

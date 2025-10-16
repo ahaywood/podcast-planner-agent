@@ -6,7 +6,7 @@ export const outline = tool({
   name: "generate-outline",
   description: `This tool generates a podcast outline based on the provided
     topic. Use this tool when the user asks for an outline or is trying to plan
-    the content of the episode.`,
+    the content of the episode. Returns strict JSON, no extra text.`,
   inputSchema: z.object({
     topic: z.string().describe("The topic of the episode"),
   }),
